@@ -1,0 +1,181 @@
+1. Find the second highest salary
+Table: Employee(id, name, salary)
+Question:
+Write a query to find the second highest salary from the Employee table.
+answer:
+SELECT MAX(salary) AS SecondHighestSalary
+FROM Employee
+WHERE salary < (SELECT MAX(salary) FROM Employee);
+
+2. Find employees who earn more than their manager
+Table: Employee(id, name, salary, manager_id)
+Question:
+Write a query to find employees whose salary is greater than their manager's salary.
+answer:
+SELECT e.name
+FROM Employee e
+JOIN Employee m ON e.manager_id = m.id
+WHERE e.salary > m.salary;
+
+3. Get department with highest average salary
+Tables:
+•	Employee(id, name, salary, dept_id)
+•	Department(id, name)
+Question:
+Return the department name with the highest average salary.
+Answer:
+SELECT d.name
+FROM Department d
+JOIN Employee e ON d.id = e.dept_id
+GROUP BY d.name
+ORDER BY AVG(e.salary) DESC
+LIMIT 1;
+
+4. Find duplicates in a table
+Table: Students(id, name)
+Question:
+Find all duplicate names in the Students table.
+Answer:
+SELECT name, COUNT(*) as count
+FROM Students
+GROUP BY name
+HAVING COUNT(*) > 1;
+
+5. Retrieve the top 3 salaries from each department
+Tables:
+•	Employee(id, name, salary, dept_id)
+•	Department(id, name)
+Question:
+Find the top 3 salaries in each department.
+Answer:
+SELECT *
+FROM (
+    SELECT e.*, 
+           RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rnk
+    FROM Employee e
+) ranked
+WHERE rnk <= 3;
+
+6. Find the employee with the nth highest salary
+Table: Employee(id, name, salary)
+Question:
+Write a query to get the employee with the Nth highest salary. Assume N = 4.
+Answer:
+SELECT DISTINCT salary
+FROM Employee
+ORDER BY salary DESC
+LIMIT 1 OFFSET 3;  -- N = 4, so offset = 3
+
+7. Count number of employees in each department
+Tables:
+•	Employee(id, name, dept_id)
+•	Department(id, name)
+Question:
+Return department name and number of employees in each.
+Answer:
+SELECT d.name, COUNT(e.id) AS employee_count
+FROM Department d
+LEFT JOIN Employee e ON d.id = e.dept_id
+GROUP BY d.name;
+
+8. Find employees who joined in the last 3 months
+Table: Employee(id, name, joining_date)
+Question:
+Get employees who joined in the last 3 months.
+Answer:
+SELECT *
+FROM Employee
+WHERE joining_date >= CURRENT_DATE - INTERVAL '3 MONTH';
+
+9. Duplicate Emails
+Table: Users(id, email)
+Question:
+Find all duplicate emails.
+Answer:
+SELECT email, COUNT(*) as count
+FROM Users
+GROUP BY email
+HAVING COUNT(*) > 1;
+
+10. Highest Paid Employee in Each Department
+Tables: Employee(id, name, salary, dept_id)
+Question:
+Find the highest-paid employee in every department.
+Answer:
+SELECT *
+FROM (
+    SELECT e.*, 
+           RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS rnk
+    FROM Employee e
+) ranked
+WHERE rnk = 1;
+
+11. Employees Without Managers
+Table: Employee(id, name, manager_id)
+Question:
+List employees who don't have a manager.
+Answer:
+SELECT *
+FROM Employee
+WHERE manager_id IS NULL;
+
+12. Projects with No Employees Assigned
+Tables: Project(id, name), Employee_Project(employee_id, project_id)
+Question:
+Find all projects that have no employees assigned.
+Answer:
+SELECT p.*
+FROM Project p
+LEFT JOIN Employee_Project ep ON p.id = ep.project_id
+WHERE ep.project_id IS NULL;
+
+13. Cumulative Salary by Department
+Table: Employee(id, name, salary, dept_id)
+Question:
+Calculate the cumulative salary for each department ordered by salary.
+Answer:
+SELECT id, name, dept_id, salary,
+       SUM(salary) OVER (PARTITION BY dept_id ORDER BY salary) AS cumulative_salary
+FROM Employee;
+
+14. Retrieve All Employees
+Table: Employee(id, name, salary)
+Answer:
+SELECT * FROM Employee;
+
+15. List All Unique Department IDs
+Answer:
+SELECT DISTINCT dept_id FROM Employee;
+
+16. Get Employee Count and Avg Salary Per Department
+Answer:
+SELECT dept_id, COUNT(*) AS employee_count, AVG(salary) AS avg_salary
+FROM Employee
+GROUP BY dept_id;
+
+17. List Managers Who Manage More Than 3 Employees
+Answer:
+SELECT manager_id, COUNT(*) AS reportees
+FROM Employee
+WHERE manager_id IS NOT NULL
+GROUP BY manager_id
+HAVING COUNT(*) > 3;
+
+18. Running Total of Salary by Department
+Answer:
+SELECT id, name, dept_id, salary,
+       SUM(salary) OVER (PARTITION BY dept_id ORDER BY salary) AS running_total
+FROM Employee;
+
+19. Rank Employees by Salary in Each Department
+Answer:
+SELECT id, name, dept_id, salary,
+       RANK() OVER (PARTITION BY dept_id ORDER BY salary DESC) AS salary_rank
+FROM Employee;
+
+20. Find Gaps in Employee IDs
+Answer:
+SELECT e1.id + 1 AS missing_id
+FROM Employee e1
+LEFT JOIN Employee e2 ON e1.id + 1 = e2.id
+WHERE e2.id IS NULL;
