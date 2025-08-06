@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Home!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #e0f7fa;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 3em;
+            color: #00695c;
+        }
+        .info {
+            max-width: 600px;
+            margin: 20px auto;
+            font-size: 1.2em;
+        }
+        img {
+            width: 300px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #0077cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome Home! 🏡</h1>
+    <div class="info">
+        Home is where love resides, memories are made, and laughter never ends.  
+        It's not just a place — it's a feeling.
+    </div>
+    <img src="https://cdn.pixabay.com/photo/2020/03/10/11/55/house-4927251_1280.jpg" alt="Cute House">
+    <br>
+    <a href="https://pixabay.com/illustrations/house-home-nature-building-4927251/" target="_blank">
+        View the image on Pixabay
+    </a>
+</body>
+</html>
